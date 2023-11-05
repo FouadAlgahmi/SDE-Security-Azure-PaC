@@ -1,0 +1,92 @@
+name: PAC Pipeline Build
+
+env:
+  planFolder: Output
+
+on:
+  workflow_call:
+    inputs:
+      pac-selector-dev:
+        type: string
+        description: The Development PaC Selector defined in the global-settings.jsonc file.
+        required: true
+      pac-selectors-qa-list:
+        type: string
+        description: Comma separated list of PaC Selectors defined in the global-settings.jsonc file.
+        required: false
+      definition_folder:
+        type: string
+        description: Path to the definitions folder.
+        required: false
+        default: "./Definitions"
+
+jobs:
+  build:
+    name: Build Deployment Plans
+    runs-on: cvs-linux-self-hosted
+    container:
+      image: docker pull mcr.microsoft.com/azure-cli:10.4.1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Check for NO ACTIONS
+        shell: pwsh
+        run: |
+          if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
+            Write-Output "NO_ACTIONS file found, exiting"
+            gh run cancel ${i github.run_id }}
+            gh run watch ${i github.run_id }}
+          }
+
+      - name: Install the Required Modules
+        run: |
+          Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider nuget
+          Get-PSRepository
+          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
+
+      - name: Build the Plans
+        shell: pwsh
+        run: |
+          $SecurePassword = ConvertTo-SecureString -String ${{secrets.AZURE_PAC_CLIENT_SECRET}} -AsPlainText -Force
+          $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{secrets.AZURE_PAC_CLIENT_ID}}, $SecurePassword
+          Connect-AzAccount -ServicePrincipal -TenantId ${{secrets.AZURE_PAC_TENANT_ID}} -Credential $Credential
+
+          # Check if the authentication was successful
+          if (Get-AzContext) {
+              Write-Output "Successfully logged in using Service Principal."
+          } else {
+              Write-Output "Failed to authenticate using Service Principal."
+          }
+
+          New-Item -ItemType Directory -Path ./Output
+          $PacList = "${{inputs.pac-selector-deva}}" + ',' + "${{inputs.pac-selectors-qa-list}}"
+          foreach ($pac in $PacList.split(',')) {
+            $pacSelector = $pac.trim()
+            if ($pacSelector -ne "") {
+              $planDirectory = (Join-Path $env:planFolder "plans-$pacSelector")
+              if (-not (Test-Path $planDirectory)) {
+                New-Item -ItemType Directory -Path $env:planFolder -Name "plans-$pacSelector"
+              }
+              $outputFile = (Join-Path $planDirectory "output.txt")
+              if (Test-Path $outputFile) {
+                Remove-Item -Path $outputFile -Force
+              }
+              Build-DeploymentPlans -definitionsRootFolder ${{inputs.definition_folder}} -outputFolder $env:planFolder -PacEnvironmentSelector $pacSelector | Tee-Object -FilePath $outputFile
+            }
+          }
+
+      - name: Detect the Plans
+        run: |
+          if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_DEPLOY" -Recurse) {
+            Write-Output "NO_DEPLOY file found, exiting"
+            gh run cancel ${{github.run_id}}
+            gh run watch ${{github.run_id}}
+          }
+
+      - name: Upload the Deployment Plans
+        uses: actions/upload-artifact@v3
+        with:
+          name: Deployment-Plans
+          path: ./Output
