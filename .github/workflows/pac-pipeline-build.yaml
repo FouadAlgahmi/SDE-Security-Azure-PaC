@@ -40,7 +40,7 @@ jobs:
             gh run watch ${i github.run_id }}
           }
 
-      - name: Install the Required Modules
+      - name: Install The Required Modules
         run: |
           Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider nuget
           Get-PSRepository
