@@ -23,7 +23,7 @@ on:
 jobs:
   build:
     name: Build Deployment Plans
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
 
