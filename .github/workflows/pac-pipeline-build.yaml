@@ -34,10 +34,19 @@ jobs:
       - name: Check for NO ACTIONS
         shell: pwsh
         run: |
-          if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
-            Write-Output "NO_ACTIONS file found, exiting"
-            gh run cancel ${{ github.run_id }}
-            gh run watch ${{ github.run_id }}
+          $definitionFolder = ${{inputs.definition_folder}}
+          $noActionsFileFound = $false
+
+          Get-ChildItem -Path $definitionFolder | ForEach-Object {
+              if ($_.Name -eq "NO_ACTIONS" -and $_.PSIsContainer -eq $false) {
+                  $noActionsFileFound = $true
+              }
+          }
+
+          if ($noActionsFileFound) {
+              Write-Output "NO_ACTIONS file found, exiting"
+              gh run cancel ${{ github.run_id }}
+              gh run watch ${{ github.run_id }}
           }
 
       - name: Install The Required Modules
