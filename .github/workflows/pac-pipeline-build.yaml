@@ -40,7 +40,7 @@ jobs:
       - name: Check for NO ACTIONS
         shell: pwsh
         run: |
-          if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
+          if (Get-ChildItem -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
             Write-Output "NO_ACTIONS file found, exiting"
             gh run cancel ${{ github.run_id }}
             gh run watch ${{ github.run_id }}
