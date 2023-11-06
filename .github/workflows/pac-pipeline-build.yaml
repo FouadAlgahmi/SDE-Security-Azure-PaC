@@ -31,13 +31,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.3.0
 
+      - name: Setup PowerShell
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y powershell
+
       - name: Check for NO ACTIONS
         shell: pwsh
         run: |
           if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
             Write-Output "NO_ACTIONS file found, exiting"
-            gh run cancel ${i github.run_id }}
-            gh run watch ${i github.run_id }}
+            gh run cancel ${ github.run_id }}
+            gh run watch ${{ github.run_id }}
           }
 
       - name: Install The Required Modules
