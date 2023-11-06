@@ -23,7 +23,7 @@ on:
 jobs:
   build:
     name: Build Deployment Plans
-    runs-on: cvs-linux-self-hosted
+    runs-on: ubuntu-latest
     container:
       image: docker pull mcr.microsoft.com/azure-cli:10.4.1
 
