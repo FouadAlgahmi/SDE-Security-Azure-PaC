@@ -86,12 +86,16 @@ jobs:
           }
 
       - name: Detect the Plans
+        shell: pwsh
         run: |
-          if (Test-Path -Path ${{inputs.definition_folder}} -Filter "NO_DEPLOY" -Recurse) {
+          if (Get-ChildItem -Path ${{inputs.definition_folder}} -Filter "NO_DEPLOY" -Recurse) {
             Write-Output "NO_DEPLOY file found, exiting"
             gh run cancel ${{github.run_id}}
             gh run watch ${{github.run_id}}
           }
+
+          if (Test-Path $env:planFolder/plans-*){
+          echo "Deploy=true" >> $env:GITHUB_ENV}
 
       - name: Upload the Deployment Plans
         uses: actions/upload-artifact@v3
