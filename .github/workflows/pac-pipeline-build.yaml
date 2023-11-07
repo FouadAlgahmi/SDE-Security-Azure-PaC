@@ -49,7 +49,7 @@ jobs:
       - name: Install The Required Modules
         shell: pwsh
         run: |
-          Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider nuget
+          Register-PSRepository -Default -InstallationPolicy Trusted -PackageManagementProvider NuGet
           Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
 
