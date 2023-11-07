@@ -47,6 +47,7 @@ jobs:
           }
 
       - name: Install The Required Modules
+        shell: pwsh
         run: |
           Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider nuget
           Get-PSRepository
