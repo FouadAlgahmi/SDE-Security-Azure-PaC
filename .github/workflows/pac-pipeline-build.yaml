@@ -50,9 +50,6 @@ jobs:
         shell: pwsh
         run: |
           Get-PSRepository
-          Register-PSRepository -Name Mypsgallery -SourceLocation https://www.powershellgallery.com/api/v2/ -PublishLocation https://www.powershellgallery.com/api/v2/  -InstallationPolicy Trusted -PackageManagementProvider NuGet
-          Unregister-PSRepository -Name PSGallery
-          Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository Mypsgallery
 
       - name: Build the Plans
