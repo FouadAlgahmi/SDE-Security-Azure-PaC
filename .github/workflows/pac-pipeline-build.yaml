@@ -49,6 +49,7 @@ jobs:
       - name: Install The Required Modules
         shell: pwsh
         run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
 
