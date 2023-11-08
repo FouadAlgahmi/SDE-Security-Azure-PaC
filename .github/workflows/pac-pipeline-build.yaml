@@ -51,7 +51,6 @@ jobs:
         run: |
           Unregister-PSRepository -Name PSGallery
           Register-PSRepository -Name PSGallery_1 -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider NuGet
-          Set-PSRepository -Name PSGallery_1 -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider NuGet
           Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery_1
 
