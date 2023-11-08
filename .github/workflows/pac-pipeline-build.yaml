@@ -69,7 +69,7 @@ jobs:
           }
 
           New-Item -ItemType Directory -Path ./Output
-          $PacList = "${{inputs.pac-selector-deva}}" + ',' + "${{inputs.pac-selectors-qa-list}}"
+          $PacList = "${{inputs.pac-selector-dev}}" + ',' + "${{inputs.pac-selectors-qa-list}}"
           foreach ($pac in $PacList.split(',')) {
             $pacSelector = $pac.trim()
             if ($pacSelector -ne "") {
