@@ -49,7 +49,7 @@ jobs:
       - name: Install The Required Modules
         shell: pwsh
         run: |
-          
+          Unregister-PSRepository -Name PSGallery
           Register-PSRepository -Name PSGallery_1 -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider NuGet
           Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery_1
@@ -57,7 +57,6 @@ jobs:
       - name: Build the Plans
         shell: pwsh
         run: |
-          Unregister-PSRepository -Name PSGallery
           $SecurePassword = ConvertTo-SecureString -String ${{secrets.AZURE_PAC_CLIENT_SECRET}} -AsPlainText -Force
           $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{secrets.AZURE_PAC_CLIENT_ID}}, $SecurePassword
           Connect-AzAccount -ServicePrincipal -TenantId ${{secrets.AZURE_PAC_TENANT_ID}} -Credential $Credential
