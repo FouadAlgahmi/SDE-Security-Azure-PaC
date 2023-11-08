@@ -51,9 +51,9 @@ jobs:
         run: |
           Get-PSRepository
           Unregister-PSRepository -Name PSGallery
-          Register-PSRepository -Name MyRepository -SourceLocation https://www.example.com/PowerShellRepo -InstallationPolicy Trusted
+          Register-PSRepository -Name Mypsgallery -SourceLocation https://www.powershellgallery.com/api/v2/ -InstallationPolicy Trusted -PackageManagementProvider NuGet
           Get-PSRepository
-          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository  MyRepository
+          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository Mypsgallery
 
       - name: Build the Plans
         shell: pwsh
