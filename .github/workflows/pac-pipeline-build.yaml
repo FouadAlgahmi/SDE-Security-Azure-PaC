@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           Get-PSRepository
-          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery_1
+          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
 
       - name: Build the Plans
         shell: pwsh
