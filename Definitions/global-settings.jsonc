@@ -6,7 +6,7 @@
             "pacSelector": "SUB-CORP-SDEPAC",
             "cloud": "AzureCloud",
             "tenantId": "54cd337e-4410-429f-8ae9-bd3f51932cfb",
-            "deploymentRootScope": "/subscriptions/31648342-91f2-4a70-ae4f-71f58cb9e044",
+            "deploymentRootScope": "/subscriptions/cc01580b-8afb-4eec-bb77-66e02dfd7578",
             "desiredState": {
                 "strategy": "ownedOnly"
             }
