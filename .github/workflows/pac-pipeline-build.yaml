@@ -71,10 +71,11 @@ jobs:
               if (Test-Path $outputFile) {
                 Remove-Item -Path $outputFile -Force
               }
-              Build-DeploymentPlans`
-                -definitionsRootFolder ${{inputs.definition_folder}}`
-                -outputFolder $env:planFolder`
-                -PacEnvironmentSelector $pacSelector`
+
+              Build-DeploymentPlans `
+                -definitionsRootFolder ${{inputs.definition_folder}} `
+                -outputFolder $env:planFolder `
+                -PacEnvironmentSelector $pacSelector `
                 *>&1| Tee-Object -FilePath $outputFile
             }
           }
