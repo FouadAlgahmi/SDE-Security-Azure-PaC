@@ -37,15 +37,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.3.0
 
-      - name: Check for NO ACTIONS
-        shell: pwsh
-        run: |
-          if (Get-ChildItem -Path ${{inputs.definition_folder}} -Filter "NO_ACTIONS" -Recurse) {
-            Write-Output "NO_ACTIONS file found, exiting"
-            gh run cancel ${{ github.run_id }}
-            gh run watch ${{ github.run_id }}
-          }
-
       - name: Install The Required Modules
         shell: pwsh
         run: |
@@ -82,18 +73,6 @@ jobs:
               Build-DeploymentPlans -definitionsRootFolder ${{inputs.definition_folder}} -outputFolder $env:planFolder -PacEnvironmentSelector $pacSelector | Tee-Object -FilePath $outputFile
             }
           }
-
-      - name: Detect the Plans
-        shell: pwsh
-        run: |
-          if (Get-ChildItem -Path ${{inputs.definition_folder}} -Filter "NO_DEPLOY" -Recurse) {
-            Write-Output "NO_DEPLOY file found, exiting"
-            gh run cancel ${{github.run_id}}
-            gh run watch ${{github.run_id}}
-          }
-
-          if (Test-Path $env:planFolder/plans-*){
-          echo "Deploy=true" >> $env:GITHUB_ENV}
 
       - name: Upload the Deployment Plans
         uses: actions/upload-artifact@v3
