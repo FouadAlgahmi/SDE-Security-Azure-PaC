@@ -58,6 +58,7 @@ jobs:
           }
 
           New-Item -ItemType Directory -Path ./Output
+
           $PacList = "${{inputs.pac-selector-dev}}" + ',' + "${{inputs.pac-selectors-qa-list}}"
           foreach ($pac in $PacList.split(',')) {
             $pacSelector = $pac.trim()
@@ -70,7 +71,11 @@ jobs:
               if (Test-Path $outputFile) {
                 Remove-Item -Path $outputFile -Force
               }
-              Build-DeploymentPlans -definitionsRootFolder ${{inputs.definition_folder}} -outputFolder $env:planFolder -PacEnvironmentSelector $pacSelector | Tee-Object -FilePath $outputFile
+              Build-DeploymentPlans`
+                -definitionsRootFolder ${{inputs.definition_folder}}`
+                -outputFolder $env:planFolder`
+                -PacEnvironmentSelector $pacSelector`
+                *>&1| Tee-Object -FilePath $outputFile
             }
           }
 
