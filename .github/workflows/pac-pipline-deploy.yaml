@@ -9,6 +9,9 @@ on:
       pac-selector-dev:
         type: string
         required: true
+      run_id:
+        type: string
+        required: true
 
 jobs:
   review-build-plan-message:
