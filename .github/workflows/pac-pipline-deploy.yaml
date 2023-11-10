@@ -1,0 +1,31 @@
+name: PaC Pipeline Deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true 
+      pac-selector-dev:
+        type: string
+        required: true
+
+jobs:
+  review-build-plan-message:
+    name: Review build plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show plan Output
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await core.summary
+              .addHeading('Review epac plan results')
+              .addLink('Click this link to review the epac plan.', ${{ inputs.run_id }})
+              .addBreak()
+              .addRaw('On the displayed page scroll to the bottom to treview the build plan.')
+              .addBreak()
+              .addRaw('Then return to this page to approve or deny the Deployment of the plan.')
+              .addBreak()
+              .write()
+      
