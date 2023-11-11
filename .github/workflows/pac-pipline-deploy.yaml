@@ -44,8 +44,8 @@ jobs:
   prepare-workspace: 
     name: Prepare workspace for deployment
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
+    # container:
+    #   image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
     needs: review-build-plan-message
     environment: ${{ inputs.envirnoment}}
     steps:
@@ -92,8 +92,8 @@ jobs:
   deploy-to-dev:
     name: Deploy policy plan and roles to dev environment
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
+    # container:
+    #   image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
     needs: prepare-workspace
     steps:
       - name: restore cache
