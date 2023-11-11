@@ -114,10 +114,12 @@ jobs:
           Install-Module -Name Pester -Force -Scope CurrentUser -RequiredVersion 5.5.0 -Repository PSGallery
 
       - name: Deploy the plans
-        run: 
+        shell: pwsh
+        run: |
           $outputFile = (join-path ${{ inputs.plan_folder }} "output.txt")
-          if (Test-Path $outputFile){
-            Remove-Item -Path $outputFile -Force}
+          if (Test-Path $outputFile) {
+            Remove-Item -Path $outputFile -Force
+          }
 
           Build-DeploymentPlans `
             -definitionsRootFolder ${{inputs.definition_folder}} `
