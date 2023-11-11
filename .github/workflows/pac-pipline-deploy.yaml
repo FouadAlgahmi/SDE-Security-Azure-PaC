@@ -78,10 +78,10 @@ jobs:
             fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/Deployment-Plans.zip`, Buffer.from(download.data));
 
       - name: Unzip artifacts
-        shell: bash
+        shell: pwsh
         run: |
           mkdir -p ${{ inputs.plan_folder}}
-          unzip Deployment-Plans.zip -d ${{ inputs.plan_folder }}
+          Expand-Archive -Path Deployment-Plans.zip -DestinationPath ${{ inputs.plan_folder }}
       
       - name: Cache the workspace
         uses: actions/cache/save@v3
