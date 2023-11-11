@@ -53,7 +53,7 @@ jobs:
               run_id: ${{ inputs.run_id }}
               }); 
             
-            console.log(context.rep.owner, context.repo.repo, ${{ inputs.run_id }}, allArtifacts.data.artifacts);
+            console.log(context.repo.owner, context.repo.repo, ${{ inputs.run_id }}, allArtifacts.data.artifacts);
             let matchArtifact= allArtifacts.data.artifacts.filter((artifact)=> {
             return artifact.name=="Deployment-Plans"})[0];
 
