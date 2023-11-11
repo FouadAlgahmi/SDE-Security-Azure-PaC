@@ -113,4 +113,15 @@ jobs:
           Get-PSRepository
           Install-Module -Name Pester -Force -Scope CurrentUser -RequiredVersion 5.5.0 -Repository PSGallery
 
-        
+      - name: Deploy the plans
+        run: 
+          $outputFile = (Join-Path ${{ inputs.plan_folder }} "output.txt")
+          if(Test-Path $outputFile){
+          Remove-Item -Path Output -Force}
+
+          Build-DeploymentPlans `
+            -definitionsRootFolder ${{inputs.definition_folder}} `
+            -inputFolder ${{ inputs.plan_folder }} `
+            -PacEnvironmentSelector ${{ inputs.pac-selector-dev }} `
+            *>&1| Tee-Object -FilePath $outputFile
+
