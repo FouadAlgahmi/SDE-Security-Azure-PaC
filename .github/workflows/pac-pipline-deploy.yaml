@@ -21,6 +21,11 @@ on:
         required: false
         default: ./Output
 
+      definition_folder:
+        type: string
+        required: false
+        default: ./Definitions
+
 jobs:
   review-build-plan-message:
     name: Review build plan
@@ -121,7 +126,7 @@ jobs:
             Remove-Item -Path $outputFile -Force
           }
 
-          Build-DeploymentPlans `
+          Deploy-PolicyPlan `
             -definitionsRootFolder ${{inputs.definition_folder}} `
             -inputFolder ${{ inputs.plan_folder }} `
             -PacEnvironmentSelector ${{ inputs.pac-selector-dev }} `
