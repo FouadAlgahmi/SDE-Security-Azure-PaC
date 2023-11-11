@@ -97,7 +97,7 @@ jobs:
     needs: prepare-workspace
     steps:
       - name: restore cache
-        uses: actions/cache/restore
+        uses: actions/cache/restore@v3
         with:
           path: .
           key: ${{ runner.OS }}-cache--${{ github.run_id }}
