@@ -143,4 +143,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.pac-selector-dev }} deployment output
-          path: "${{ inputs.plan_folder }} /output.txt"
+          path: "${{ inputs.plan_folder }}/output.txt"
