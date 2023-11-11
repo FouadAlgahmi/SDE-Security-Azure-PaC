@@ -121,6 +121,10 @@ jobs:
       - name: Deploy the plans
         shell: pwsh
         run: |
+          $SecurePassword = ConvertTo-SecureString -String ${{secrets.AZURE_PAC_CLIENT_SECRET}} -AsPlainText -Force
+          $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{secrets.AZURE_PAC_CLIENT_ID}}, $SecurePassword
+          Connect-AzAccount -ServicePrincipal -TenantId ${{secrets.AZURE_PAC_TENANT_ID}} -Credential $Credential
+  
           $outputFile = (join-path ${{ inputs.plan_folder }} "output.txt")
           if (Test-Path $outputFile) {
             Remove-Item -Path $outputFile -Force
