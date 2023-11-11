@@ -25,6 +25,8 @@ jobs:
   review-build-plan-message:
     name: Review build plan
     runs-on: ubuntu-latest
+    # container:
+    #   image: mcr.microsoft.com/azure-powershell:10.4.1-centos-7
     steps:
 
       - name: Show plan Output
@@ -103,3 +105,11 @@ jobs:
           key: ${{ runner.OS }}-cache--${{ github.run_id }}
           restore-keys: |
             ${{ runner.OS }}-cache-
+      - name: Install Required Modules
+        shell: pwsh
+        run: |
+          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
+          Get-PSRepository
+          Install-Module -Name Pester -Force -Scope CurrentUser -RequiredVersion 5.5.0 -Repository PSGallery
+
+        
