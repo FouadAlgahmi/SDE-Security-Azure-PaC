@@ -114,8 +114,11 @@ jobs:
       - name: Install Required Modules
         shell: pwsh
         run: |
-          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
           Get-PSRepository
+          Import-Module Az
+
+          Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
+
           Install-Module -Name Pester -Force -Scope CurrentUser -RequiredVersion 5.5.0 -Repository PSGallery
 
       - name: Deploy the plans

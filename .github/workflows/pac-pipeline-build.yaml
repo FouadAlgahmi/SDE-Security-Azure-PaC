@@ -40,8 +40,7 @@ jobs:
       - name: Install The Required Modules
         shell: pwsh
         run: |
-          Register-PSRepository
-          Import-Module Az
+          Get-PSRepository
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
 
       - name: Build the Plans
