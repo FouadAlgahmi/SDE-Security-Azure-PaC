@@ -115,9 +115,9 @@ jobs:
 
       - name: Deploy the plans
         run: 
-          $outputFile = (Join-Path ${{ inputs.plan_folder }} "output.txt")
-          if(Test-Path $outputFile){
-          Remove-Item -Path Output -Force}
+          $outputFile = (join-path ${{ inputs.plan_folder }} "output.txt")
+          if (Test-Path $outputFile){
+            Remove-Item -Path $outputFile -Force}
 
           Build-DeploymentPlans `
             -definitionsRootFolder ${{inputs.definition_folder}} `
