@@ -115,8 +115,8 @@ jobs:
         shell: pwsh
         run: |
           Get-PSRepository
+          Install-Module -Name Az -Force -AllowClobber -Scope CurrentUser
           Import-Module Az
-
           Install-Module -Name EnterprisePolicyAsCode -Force -Scope CurrentUser -RequiredVersion 8.2.4 -Repository PSGallery
 
           Install-Module -Name Pester -Force -Scope CurrentUser -RequiredVersion 5.5.0 -Repository PSGallery
